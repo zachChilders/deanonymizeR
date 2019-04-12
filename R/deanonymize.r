@@ -11,7 +11,7 @@ getTable <- function() {
     connstring <- Sys.getenv('localingressstring')
     if (nchar(connstring) > 0) { # Detect local dev
       library('RPostgreSQL')
-      conn <- connectToPostgres()
+      conn <- connectToPostgres(connstring)
       tables <- dbGetQuery(conn, "SELECT * FROM tables_index")
       tables
     }
@@ -25,7 +25,8 @@ getTable <- function() {
     }
 }
 
-connectToPostgres <- function() {
+connectToPostgres <- function(connstring) {
+
     connectionParams <- strsplit(connstring, "[|]")
     pg <- dbDriver("PostgreSQL")
     connection <- dbConnect(pg, connectionParams[[1]][1], user=connectionParams[[1]][2], password=connectionParams[[1]][3], dbname=connectionParams[[1]][4], port=5432)
