@@ -1,12 +1,10 @@
 
-#' Postggres Connection
+#' GetTable
 #'
-#' This function allows you to connect to postgres.
-#' @keywords Postgres
+#' Fetches a table from Postgres, returns as Dataframe
 #' @export
 #' @examples
-#' getTable()
-
+#' getTable(table_name)
 getTable <- function(table_name) {
     connstring <- Sys.getenv('localingressstring')
     if (nchar(connstring) > 0) { # Detect local dev
@@ -20,13 +18,18 @@ getTable <- function(table_name) {
       s <- read.df(source="json", path='/FileStore/tables/secrets.json')
       conn <- as.data.frame(s)
       connstring <- conn$ingressconnectionstring[1]
-      df <- read.jdbc(connstring, table_name)
+      df <- as.data.frame(read.jdbc(connstring, table_name))
       df
     }
 }
 
+#' ConnectToPostgres
+#'
+#' Local helper function to attach to Postgres. Must have run init.sh previously
+#' @export
+#' @examples
+#' connectToPostgres(connstring)
 connectToPostgres <- function(connstring) {
-
     connectionParams <- strsplit(connstring, "[|]")
     pg <- dbDriver("PostgreSQL")
     connection <- dbConnect(pg, connectionParams[[1]][1], user=connectionParams[[1]][2], password=connectionParams[[1]][3], dbname=connectionParams[[1]][4], port=5432)
