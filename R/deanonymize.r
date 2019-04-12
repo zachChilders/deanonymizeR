@@ -7,12 +7,12 @@
 #' @examples
 #' getTable()
 
-getTable <- function() {
+getTable <- function(table_name) {
     connstring <- Sys.getenv('localingressstring')
     if (nchar(connstring) > 0) { # Detect local dev
       library('RPostgreSQL')
       conn <- connectToPostgres(connstring)
-      tables <- dbGetQuery(conn, "SELECT * FROM tables_index")
+      tables <- dbGetQuery(conn, paste("SELECT * FROM ", table_name)
       tables
     }
     else { # We're in spark
@@ -20,7 +20,7 @@ getTable <- function() {
       s <- read.df(source="json", path='/FileStore/tables/secrets.json')
       conn <- as.data.frame(s)
       connstring <- conn$ingressconnectionstring[1]
-      df <- as.data.frame(read.jdbc(connstring, 'tables_index'))
+      df <- as.data.frame(read.jdbc(connstring, table_name))
       df
     }
 }
