@@ -20,7 +20,7 @@ getTable <- function(table_name) {
       s <- read.df(source="json", path='/FileStore/tables/secrets.json')
       conn <- as.data.frame(s)
       connstring <- conn$ingressconnectionstring[1]
-      df <- as.data.frame(read.jdbc(connstring, table_name))
+      df <- read.jdbc(connstring, table_name)
       df
     }
 }
