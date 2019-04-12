@@ -12,7 +12,7 @@ getTable <- function(table_name) {
     if (nchar(connstring) > 0) { # Detect local dev
       library('RPostgreSQL')
       conn <- connectToPostgres(connstring)
-      tables <- dbGetQuery(conn, paste("SELECT * FROM ", table_name)
+      tables <- dbGetQuery(conn, paste("SELECT * FROM ", table_name))
       tables
     }
     else { # We're in spark
