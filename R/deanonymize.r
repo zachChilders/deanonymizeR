@@ -14,9 +14,9 @@ connectToPostgres <- function() {
         connectionParams <- strsplit(connstring, "[|]")
         pg <- dbDriver("PostgresSQL")
         connection <- dbConnect(pg, connectionParams[[1]][1], user=connectionParams[[1]][2], password=connectionParams[[1]][3], dbname=connectionParams[[1]][4], port=5432)
-        return connection
+
     }
     else { # We're in spark
-        return NULL
+        return 
     }
 }
