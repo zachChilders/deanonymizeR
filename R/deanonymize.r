@@ -35,3 +35,20 @@ connectToPostgres <- function(connstring) {
     connection <- dbConnect(pg, connectionParams[[1]][1], user=connectionParams[[1]][2], password=connectionParams[[1]][3], dbname=connectionParams[[1]][4], port=5432)
     connection
 }
+
+
+#' Enum
+#' 
+#' Creates an Enum from given values
+#' @export
+#' Enum(...)
+Enum <- function(...) {
+  values <- sapply(match.call(expand.dots = TRUE)[-1L], deparse)
+  
+  stopifnot(identical(unique(values), values))
+
+  res <- setNames(seq_along(values), values)
+  res <- as.environment(as.list(res))
+  lockEnvironment(res, bindings = TRUE)
+  res
+}
