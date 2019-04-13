@@ -1,4 +1,21 @@
 
+#' selectNextTable
+#'
+#' Fetches a random table in desiredState
+#' @export
+#' @examples
+#' selectNextTable(desiredState)
+selectNextTable <- function(desiredState) {
+  # Select ready for triage
+  candidateTables <- subset(index, state == desiredState)
+
+  # Select table
+  randomTable <- sample(candidateTables, 1)
+  tableRowToTriage <- randomTable$table_name
+  table <- getTable(tableRowToTriage)
+  table
+}
+
 #' GetTable
 #'
 #' Fetches a table from Postgres, returns as Dataframe
@@ -10,7 +27,7 @@ getTable <- function(table_name) {
   if (nchar(connstring) > 0) { # Detect local dev
     library('RPostgreSQL')
     conn <- connectToPostgres(connstring)
-    tables <- dbGetQuery(conn, paste("SELECT * FROM ", table_name))
+    tables <- dbGetQuery(conn, paste("SELECT * FROM", table_name, "WHERE table_name IS NOT NULL"))
     tables
   }
   else { # We're in spark
@@ -38,7 +55,6 @@ setTable <- function(table_row, state) {
     dbSendQuery(conn, query)
   }
 }
-
 
 #' ConnectToPostgres
 #'

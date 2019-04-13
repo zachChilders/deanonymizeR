@@ -3,5 +3,6 @@
 export(Enum)
 export(connectToPostgres)
 export(getTable)
+export(selectNextTable)
 export(setTable)
 export(states)
