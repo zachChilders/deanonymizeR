@@ -6,12 +6,17 @@
 #' @examples
 #' selectNextTable(desiredState)
 selectNextTable <- function(desiredState) {
-  # Select ready for triage
+
+
+  # Select all tables in desiredState
+  index <- getTable('tables_index')
   candidateTables <- subset(index, state == desiredState)
 
-  # Select table
-  randomTable <- sample(candidateTables, 1)
+  # Select random candidate table
+  randomTable <- candidateTables[sample(nrow(candidateTables), 1),]
   tableRowToTriage <- randomTable$table_name
+
+  #Pull that table
   table <- getTable(tableRowToTriage)
   table
 }
