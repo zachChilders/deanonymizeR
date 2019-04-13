@@ -33,7 +33,10 @@ setTable <- function(table_row, state) {
     conn <- connectToPostgres(connstring)
     query <- paste("UPDATE tables_index SET state =", state, "WHERE id =", table_row$id)
     dbSendQuery(conn, query)
-      
+  }
+  else {
+
+  }
 }
 
 
@@ -49,8 +52,6 @@ connectToPostgres <- function(connstring) {
   connection <- dbConnect(pg, connectionParams[[1]][1], user=connectionParams[[1]][2], password=connectionParams[[1]][3], dbname=connectionParams[[1]][4], port=5432)
   connection
 }
-
-
 
 #' Enum
 #' 
