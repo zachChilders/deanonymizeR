@@ -68,8 +68,12 @@ Enum <- function(...) {
   res
 }
 
-#' States
+#' GetStates
 #' 
-#' Enum for controlling the finite state machine
+#' Returns an enum for controlling the finite state machine
 #' @export
-states <- Enum(FOUND, PROCESSING, SUCCEEDED, FAILED)
+#' getStates()
+getStates <- function() {
+  states <- Enum(FOUND, PROCESSING, SUCCEEDED, FAILED)
+  states
+}
