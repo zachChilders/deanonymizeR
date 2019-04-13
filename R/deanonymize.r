@@ -70,3 +70,12 @@ Enum <- function(...) {
   lockEnvironment(res, bindings = TRUE)
   res
 }
+
+
+#' States
+#'
+#' An Enum that drives the FSM
+#' @export
+#' @examples
+#' states
+states <- Enum(FOUND, INPROGRESS, SUCCESS, FAIL)
