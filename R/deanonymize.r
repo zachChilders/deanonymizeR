@@ -17,8 +17,9 @@ selectNextTable <- function(desiredState) {
 
   #Pull that table
   table <- getTable(tableRowToTriage)
-  table
+  list(table, tableRowToTriage$id)
 }
+
 
 #' GetTable
 #'
@@ -44,6 +45,7 @@ getTable <- function(table_name) {
   }
 }
 
+
 #' SetTable
 #' 
 #' Sets a row state in the metadata table
@@ -59,6 +61,7 @@ setTable <- function(table_row, state) {
     dbSendQuery(conn, query)
   }
 }
+
 
 #' ConnectToPostgres
 #'
