@@ -24,8 +24,11 @@ getTable <- function(table_name) {
 }
 
 #' SetTable
-#'
+#' 
 #' Sets a row state in the metadata table
+#' @export
+#' @examples
+#' setTable(table_row, state)
 setTable <- function(table_row, state) {
   connstring <- Sys.getenv('localingressstring')
   if (nchar(connstring) > 0) { # Detect local dev
@@ -51,11 +54,11 @@ connectToPostgres <- function(connstring) {
 }
 
 
-
 #' Enum
 #' 
 #' Creates an Enum from given values
 #' @export
+#' @examples
 #' Enum(...)
 Enum <- function(...) {
   values <- sapply(match.call(expand.dots = TRUE)[-1L], deparse)
