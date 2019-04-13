@@ -67,3 +67,9 @@ Enum <- function(...) {
   lockEnvironment(res, bindings = TRUE)
   res
 }
+
+#' States
+#' 
+#' Enum for controlling the finite state machine
+#' @export
+states <- Enum(FOUND, PROCESSING, SUCCEEDED, FAILED)
