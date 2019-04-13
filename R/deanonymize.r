@@ -17,7 +17,7 @@ selectNextTable <- function(desiredState) {
 
   #Pull that table
   table <- getTable(tableRowToTriage)
-  list(table, tableRowToTriage$id)
+  list(table, randomTable$id)
 }
 
 
