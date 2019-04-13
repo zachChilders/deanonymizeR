@@ -34,9 +34,6 @@ setTable <- function(table_row, state) {
     query <- paste("UPDATE tables_index SET state =", state, "WHERE id =", table_row$id)
     dbSendQuery(conn, query)
   }
-  else {
-
-  }
 }
 
 
@@ -53,6 +50,8 @@ connectToPostgres <- function(connstring) {
   connection
 }
 
+
+
 #' Enum
 #' 
 #' Creates an Enum from given values
@@ -67,14 +66,4 @@ Enum <- function(...) {
   res <- as.environment(as.list(res))
   lockEnvironment(res, bindings = TRUE)
   res
-}
-
-#' GetStates
-#' 
-#' Returns an enum for controlling the finite state machine
-#' @export
-#' getStates()
-getStates <- function() {
-  states <- Enum(FOUND, PROCESSING, SUCCEEDED, FAILED)
-  states
 }
