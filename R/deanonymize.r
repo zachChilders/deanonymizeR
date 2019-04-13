@@ -6,8 +6,6 @@
 #' @examples
 #' selectNextTable(desiredState)
 selectNextTable <- function(desiredState) {
-
-
   # Select all tables in desiredState
   index <- getTable('tables_index')
   candidateTables <- subset(index, state == desiredState)
@@ -15,7 +13,7 @@ selectNextTable <- function(desiredState) {
   # Select random candidate table
   randomTable <- candidateTables[sample(nrow(candidateTables), 1),]
   tableRowToTriage <- randomTable$table_name
-
+  
   #Pull that table
   table <- getTable(tableRowToTriage)
   table
@@ -32,7 +30,7 @@ getTable <- function(table_name) {
   if (nchar(connstring) > 0) { # Detect local dev
     library('RPostgreSQL')
     conn <- connectToPostgres(connstring)
-    tables <- dbGetQuery(conn, paste("SELECT * FROM", table_name, "WHERE table_name IS NOT NULL"))
+    tables <- dbGetQuery(conn, paste("SELECT * FROM", table_name))
     tables
   }
   else { # We're in spark
