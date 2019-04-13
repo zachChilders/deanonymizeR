@@ -78,4 +78,4 @@ Enum <- function(...) {
 #' @export
 #' @examples
 #' states
-states <- Enum(FOUND, INPROGRESS, SUCCESS, FAIL)
+states <- Enum(FOUND, SCRAPEINPROGRESS, SCRAPESUCCESS, SCRAPEFAIL, TRIAGEINPROGRESS, TRIAGESUCCESS, TRIAGEFAIL)
