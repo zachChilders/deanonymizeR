@@ -59,7 +59,7 @@ getConnectionString <- function() {
     print("Spark Detected")
     library(SparkR)
     connframe <- collect(read.df(source="json", path='/FileStore/tables/connstring.json'))
-    connstring <- connframe$localingressstring
+    connstring <- connframe$localconnectionstring
   }
   connstring
 }
