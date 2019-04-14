@@ -54,10 +54,12 @@ connectToPostgres <- function(connstring) {
 getConnectionString <- function() {
   connstring <- Sys.getenv('localingressstring')
   if (nchar(connstring) > 0) { 
+    print("Spark Detected")
     library(SparkR)
     connframe <- collect(read.df(source="json", path='/FileStore/tables/connstring.json'))
     connstring <- connframe$localingressstring
   }
+  print(connstring)
   connstring
 }
 
