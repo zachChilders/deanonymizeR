@@ -7,6 +7,7 @@
 #' getTable(table_name)
 getTable <- function(table_name) {
   connstring <- getConnectionString()
+  print(connstring)
   conn <- connectToPostgres(connstring)
   tables <- dbGetQuery(conn, paste("SELECT * FROM", table_name))
   tables  
