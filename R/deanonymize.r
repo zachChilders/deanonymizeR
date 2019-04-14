@@ -15,11 +15,10 @@ getTable <- function(table_name) {
   }
   else { # We're in spark
     library(SparkR)
-    conn <- read.df(source="json", path='/FileStore/tables/secrets.json')
-    print(class(conn))
-    #connstring <- conn$ingressconnectionstring[1]
-    #dfm  <- as.data.frame(read.jdbc(connstring, table_name))  
-    #as.data.frame(df)
+    conn <- collect(read.df(source="json", path='/FileStore/tables/secrets.json'))
+    connstring <- conn$ingressconnectionstring[1]
+    df <- collect(read.jdbc(connstring, table_name))  
+    df
   }
 }
 
