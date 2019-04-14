@@ -1,26 +1,4 @@
 
-#' selectNextTable
-#'
-#' Fetches a random table in desiredState
-#' @export
-#' @examples
-#' selectNextTable(desiredState)
-selectNextTable <- function(desiredState) {
-  # Select all tables in desiredState
-  index <- getTable('tables_index')
-  cleanIndex <- index[complete.cases(index$table_name),]
-  candidateTables <- subset(cleanIndex, state == desiredState)
-
-  # Select random candidate table
-  randomTable <- candidateTables[sample(nrow(candidateTables), 1),]
-  tableRowToTriage <- randomTable$table_name
-
-  #Pull that table
-  table <- getTable(tableRowToTriage)
-  list(table, randomTable$id)
-}
-
-
 #' GetTable
 #'
 #' Fetches a table from Postgres, returns as Dataframe
@@ -36,12 +14,11 @@ getTable <- function(table_name) {
     tables
   }
   else { # We're in spark
-    library('SparkR')
     s <- read.df(source="json", path='/FileStore/tables/secrets.json')
     conn <- as.data.frame(s)
     connstring <- conn$ingressconnectionstring[1]
-    df <- as.data.frame(read.jdbc(connstring, table_name))
-    df
+    df <- as.data.frame(read.jdbc(connstring, table_name))  
+    as.data.frame(df)
   }
 }
 
