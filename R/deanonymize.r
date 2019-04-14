@@ -35,7 +35,7 @@ setTable <- function(table_row, state) {
 #' connectToPostgres(connstring)
 connectToPostgres <- function(connstring) {
   connectionParams <- strsplit(connstring, "[|]")
-  if (!require(RPostgreSQL)) {
+  if (!require('RPostgreSQL')) {
     install.packages('RPostgreSQL')
     library('RPostgreSQL')
   }
