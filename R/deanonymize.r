@@ -16,6 +16,7 @@ getTable <- function(table_name) {
   else { # We're in spark
     library(SparkR)
     conn <- read.df(source="json", path='/FileStore/tables/secrets.json')
+    conn
     connstring <- conn$ingressconnectionstring[1]
     df <- as.data.frame(read.jdbc(connstring, table_name))  
     as.data.frame(df)
