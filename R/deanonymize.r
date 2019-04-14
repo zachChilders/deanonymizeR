@@ -7,7 +7,6 @@
 #' getTable(table_name)
 getTable <- function(table_name) {
   connstring <- getConnectionString()
-  print(connstring)
   conn <- connectToPostgres(connstring)
   tables <- dbGetQuery(conn, paste("SELECT * FROM", table_name))
   tables  
@@ -36,7 +35,6 @@ setTable <- function(table_row, state) {
 #' connectToPostgres(connstring)
 connectToPostgres <- function(connstring) {
   connectionParams <- strsplit(connstring, "[|]")
-  print(connectionParams)
   if (!require('RPostgreSQL')) {
     install.packages('RPostgreSQL')
     library('RPostgreSQL')
