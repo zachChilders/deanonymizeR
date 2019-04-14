@@ -36,6 +36,7 @@ setTable <- function(table_row, state) {
 #' connectToPostgres(connstring)
 connectToPostgres <- function(connstring) {
   connectionParams <- strsplit(connstring, "[|]")
+  print(connectionParams)
   if (!require('RPostgreSQL')) {
     install.packages('RPostgreSQL')
     library('RPostgreSQL')
@@ -54,13 +55,12 @@ connectToPostgres <- function(connstring) {
 #' getConnectionString()
 getConnectionString <- function() {
   connstring <- Sys.getenv('localingressstring')
-  if (nchar(connstring) > 0) { 
+  if (nchar(connstring) < 1) { 
     print("Spark Detected")
     library(SparkR)
     connframe <- collect(read.df(source="json", path='/FileStore/tables/connstring.json'))
     connstring <- connframe$localingressstring
   }
-  print(connstring)
   connstring
 }
 
