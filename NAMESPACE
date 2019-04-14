@@ -2,6 +2,7 @@
 
 export(Enum)
 export(connectToPostgres)
+export(getConnectionString)
 export(getTable)
 export(setTable)
 export(states)

@@ -6,20 +6,11 @@
 #' @examples
 #' getTable(table_name)
 getTable <- function(table_name) {
-  connstring <- Sys.getenv('localingressstring')
-  if (nchar(connstring) > 0) { # Detect local dev
-    library('RPostgreSQL')
-    conn <- connectToPostgres(connstring)
-    tables <- dbGetQuery(conn, paste("SELECT * FROM", table_name))
-    tables
-  }
-  else { # We're in spark
-    library(SparkR)
-    conn <- collect(read.df(source="json", path='/FileStore/tables/secrets.json'))
-    connstring <- conn$ingressconnectionstring[1]
-    df <- collect(read.jdbc(connstring, table_name))  
-    df
-  }
+  connstring <- getConnectionString()
+  library('RPostgreSQL')
+  conn <- connectToPostgres(connstring)
+  tables <- dbGetQuery(conn, paste("SELECT * FROM", table_name))
+  tables  
 }
 
 
@@ -30,13 +21,11 @@ getTable <- function(table_name) {
 #' @examples
 #' setTable(table_row, state)
 setTable <- function(table_row, state) {
-  connstring <- Sys.getenv('localingressstring')
-  if (nchar(connstring) > 0) { # Detect local dev
-    library('RPostgreSQL')
-    conn <- connectToPostgres(connstring)
-    query <- paste("UPDATE tables_index SET state =", state, "WHERE id =", table_row$id)
-    dbSendQuery(conn, query)
-  }
+  connstring <- getConnectionString()
+  library('RPostgreSQL')
+  conn <- connectToPostgres(connstring)
+  query <- paste("UPDATE tables_index SET state =", state, "WHERE id =", table_row$id)
+  dbSendQuery(conn, query)
 }
 
 
@@ -54,6 +43,22 @@ connectToPostgres <- function(connstring) {
 }
 
 
+#' GetConnectionString
+#'
+#' Retrieves the connection string either from env or dbfs
+#' @export
+#' @examples
+#' getConnectionString()
+getConnectionString <- function() {
+  connstring <- Sys.getenv('localingressstring')
+  if (nchar(connstring) > 0) { 
+    library(SparkR)
+    connframe <- collect(read.df(source="json", path='/FileStore/tables/connstring.json'))
+    connstring <- connframe$localingressstring
+  }
+  connstring
+}
+
 #' Enum
 #' 
 #' Creates an Enum from given values
@@ -62,9 +67,7 @@ connectToPostgres <- function(connstring) {
 #' Enum(...)
 Enum <- function(...) {
   values <- sapply(match.call(expand.dots = TRUE)[-1L], deparse)
-  
   stopifnot(identical(unique(values), values))
-
   res <- setNames(seq_along(values), values)
   res <- as.environment(as.list(res))
   lockEnvironment(res, bindings = TRUE)
