@@ -7,7 +7,6 @@
 #' getTable(table_name)
 getTable <- function(table_name) {
   connstring <- getConnectionString()
-  library('RPostgreSQL')
   conn <- connectToPostgres(connstring)
   tables <- dbGetQuery(conn, paste("SELECT * FROM", table_name))
   tables  
@@ -22,7 +21,6 @@ getTable <- function(table_name) {
 #' setTable(table_row, state)
 setTable <- function(table_row, state) {
   connstring <- getConnectionString()
-  library('RPostgreSQL')
   conn <- connectToPostgres(connstring)
   query <- paste("UPDATE tables_index SET state =", state, "WHERE id =", table_row$id)
   dbSendQuery(conn, query)
@@ -37,6 +35,10 @@ setTable <- function(table_row, state) {
 #' connectToPostgres(connstring)
 connectToPostgres <- function(connstring) {
   connectionParams <- strsplit(connstring, "[|]")
+  if (!require(RPostgreSQL)) {
+    install.packages('RPostgreSQL')
+    library('RPostgreSQL')
+  }
   pg <- dbDriver("PostgreSQL")
   connection <- dbConnect(pg, connectionParams[[1]][1], user=connectionParams[[1]][2], password=connectionParams[[1]][3], dbname=connectionParams[[1]][4], port=5432)
   connection
